@@ -45,6 +45,13 @@
 		    <version>2.4.4</version>
 		</dependency>
 		
+		<!-- DTO -->
+		<dependency>
+			<groupId>org.uni-apurs</groupId>
+			<artifactId>faculty-dto</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		
 	</dependencies>
 
 	<build>

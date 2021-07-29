@@ -5,11 +5,9 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,6 +16,7 @@ import com.apurs.microservices.classroomsservice.dto.ClassroomDTO;
 import com.apurs.microservices.classroomsservice.dto.ClassroomUpdateDTO;
 import com.apurs.microservices.classroomsservice.model.Classroom;
 import com.apurs.microservices.classroomsservice.repository.ClassroomRepository;
+import com.apurs.microservices.facultiesservice.dto.FacultyDTO;
 
 @Service
 public class ClassroomServiceImpl implements ClassroomService{
@@ -26,9 +25,6 @@ public class ClassroomServiceImpl implements ClassroomService{
 	
 	private RestTemplate restTemplate = new RestTemplate();
 	private ModelMapper modelMapper = new ModelMapper();
-	
-	@Autowired
-	private JdbcTemplate jdbcTemplate = new JdbcTemplate();
 	
 	@Value("${app.facultiesEndpoint}")
 	private String facultiesEndpoint;
@@ -93,4 +89,14 @@ public class ClassroomServiceImpl implements ClassroomService{
 		return true;
 	}
 	
+	@Override
+	public Integer countByFacultyId(Integer facultyId) {
+		ResponseEntity<FacultyDTO> res = restTemplate.getForEntity(facultiesEndpoint + facultyId, FacultyDTO.class);
+		
+		if (!res.getStatusCode().equals(HttpStatus.OK))
+			return null;
+
+		Integer count = classroomRepository.countByFacultyId(facultyId);
+		return count;
+	}
 }

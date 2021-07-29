@@ -10,4 +10,6 @@ import com.apurs.microservices.classroomsservice.model.Classroom;
 @Repository
 public interface ClassroomRepository extends JpaRepository<Classroom, Integer> {
 	List<Classroom> findByNameContainingIgnoreCase(String name);
+	
+	Integer countByFacultyId(Integer facultyId);
 }

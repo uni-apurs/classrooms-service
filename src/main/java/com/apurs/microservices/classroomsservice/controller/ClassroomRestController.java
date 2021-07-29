@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.apurs.microservices.classroomsservice.dto.ClassroomCreateDTO;
@@ -56,6 +57,15 @@ public class ClassroomRestController {
 		if (classroomService.delete(id))
 			return new ResponseEntity<>(HttpStatus.OK);
 
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping("/count")
+	public ResponseEntity<String> countClassroomsByFacultyId(@RequestParam(required = false) Integer facultyId) {
+		Integer count = classroomService.countByFacultyId(facultyId);
+		if (count > 0)
+			return new ResponseEntity<>("facultyId: " + facultyId + " | Classroom count: " + count, HttpStatus.OK);
+					
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }
